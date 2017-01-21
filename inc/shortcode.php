@@ -30,6 +30,22 @@ function sravnitel_init(){
   
     // override default attributes with user attributes
     
+    /**
+     * @param array $defaults
+     *   field        type   default required description
+     *   ---------------------------------------------------------------------------------------------------------------------------
+     *   'id'         int    0       no       wrapper <div> element id 
+     *   'images'     str    ''      yes      list of images ids (attachment_id), comma separated
+     *   'showtitles' bool   false   no       show/hide titles
+     *   'width'      int    530     no       view window width px
+     *   'height'     int    300     no       view window height px
+     *   'index_l'    int    0       no       init, left image - is the index of the images array, starting from 0
+     *   'index_r'    int    1       no       init, right image - is the index of the images array, starting from 0
+     *   'zoom'       float  0       no       init, zoom, 0 - fit to view window, 1.0 - 100%
+     *   'center_x'   int    0       no       init, x coordinate of the original image to be placed in the center of the view window 
+     *   'center_y'   int    0       no       init, y coordinate of the original image to be placed in the center of the view window
+     */
+     
     $defaults = Array(
       'id' => 0,
       'images' => '',

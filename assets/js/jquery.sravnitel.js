@@ -27,23 +27,38 @@
 
 (function ( $ ) {
   
-  //https://gist.github.com/leolux/c794fc63d9c362013448
+  // http://stackoverflow.com/questions/5186441/javascript-drag-and-drop-for-touch-devices
+  // init_touch();
+  
+  // https://gist.github.com/leolux/c794fc63d9c362013448
   var SRAVNITEL = function(element,options){
     var elem = $(element);
     var obj = this;
     
-    var settings = $.extend({
+    var defaults = {
+      // urls, comma separated
       images:[],
+      // image titles in the same order as url
       titles:[],
+      // show or hide titles
       showtitles: false,
+      // view window width
       width:300,
+      // view window height
       height:200,
+      // init, left image - is the index of the images array, starting from 0
       index_l: 0,
+      // init, right image - is the index of the images array, starting from 0
       index_r: 1,
+      // init, zoom==0 - fit image, zoom==1.0 - 100%
       zoom: 0,
+      // init, x coordinate of the original image to be placed in the center of the view window
       center_x: 0,
+      // init, y coordinate of the original image to be placed in the center of the view window
       center_y: 0
-    },options);
+    };
+    
+    var settings = $.extend(defaults,options);
     
     var images = [];
     
@@ -109,9 +124,9 @@
       
       tmp_table.append(
         $("<tr>").append(
-          $("<th>",{title:"left image"}).html("left")
+          $("<th>",{title:"left image"}).html("left&nbsp;")
         ).append(
-          $("<th>",{title:"right image"}).html("right")
+          $("<th>",{title:"right image"}).html("right&nbsp;")
         ).append(
           $("<th>",{title:"left image"}).css({"text-align":"left","padding-left":"10px"}).html("title")
         )
@@ -274,6 +289,9 @@
         
         //console.log(i_top+" "+i_left+" : "+i_width);
         
+        //disable initial zoom
+        settings.zoom = 0;
+        
         set_zoom(i_top,i_left,i_width);
       }
       
@@ -358,7 +376,7 @@
     }
     
     function reset_selection(){
-      console.log("reset selection");
+      //console.log("reset selection");
       $(".titles tr td").css({
         background:"white"
       });
@@ -367,7 +385,7 @@
     function set_selection(index){
       reset_selection();
       var rows = $(".titles tr");
-      console.log("index is "+index+" length is "+rows.length);
+      //console.log("index is "+index+" length is "+rows.length);
       $(rows[parseInt(index)+1]).find("td").css({
         background:"rgba(200,200,200,0.5)"
       });
@@ -413,7 +431,7 @@
     }
         
     function zoom(elem,x,y,dy){
-      
+            
       old_pos = $(elem).position();
       old_x = x-old_pos.left;
       old_y = y-old_pos.top;
@@ -448,7 +466,7 @@
     }
   
     function set_zoom(top,left,width){
-      
+            
       $(".display_window").each(function(){
         var tmp_elem = $(this).find(".zoomable");
         tmp_elem.css({
@@ -524,3 +542,29 @@
   };
   
 }(jQuery));
+
+function touchHandler(event) {
+  var touch = event.changedTouches[0];
+
+  var simulatedEvent = document.createEvent("MouseEvent");
+    simulatedEvent.initMouseEvent({
+    touchstart: "mousedown",
+    touchmove: "mousemove",
+    touchend: "mouseup"
+  }[event.type], true, true, window, 1,
+    touch.screenX, touch.screenY,
+    touch.clientX, touch.clientY, false,
+    false, false, false, 0, null
+  );
+
+  touch.target.dispatchEvent(simulatedEvent);
+  event.preventDefault();
+  
+}
+
+function init_touch(element) {
+  document.addEventListener("touchstart", touchHandler, true);
+  document.addEventListener("touchmove", touchHandler, true);
+  document.addEventListener("touchend", touchHandler, true);
+  document.addEventListener("touchcancel", touchHandler, true);
+}
