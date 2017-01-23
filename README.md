@@ -20,6 +20,8 @@ Before-After overlayed image comparison plugin for jQuery and WordPress.
 
 [Elphel's Blog: Lapped MDCT-based image conditioning with optical aberrations correction, color conversion, edge emphasis and noise reduction](http://blog.elphel.com/2017/01/lapped-mdct-based-image-conditioning-with-optical-aberrations-correction-color-conversion-edge-emphasis-and-noise-reduction/ "Elphel's blog")
 
+MDCT stands for [Modified Discrete Cosine Transform](https://en.wikipedia.org/wiki/Modified_discrete_cosine_transform)
+
 ##WordPress plugin
 see **readme.txt**
 
