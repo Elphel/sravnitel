@@ -16,6 +16,10 @@ Before-After overlayed image comparison plugin for jQuery and WordPress.
 
 ![sravnitel ui](https://github.com/Elphel/sravnitel/blob/master/screenshot-1.png)
 
+**Working example
+
+[Elphel Blog: Lapped MDCT-based image conditioning with optical aberrations correction, color conversion, edge emphasis and noise reduction](http://blog.elphel.com/2017/01/lapped-mdct-based-image-conditioning-with-optical-aberrations-correction-color-conversion-edge-emphasis-and-noise-reduction/ "Elphel's blog")
+
 ##WordPress plugin
 see **readme.txt**
 
