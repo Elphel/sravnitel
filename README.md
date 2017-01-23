@@ -10,6 +10,8 @@ Before-After overlayed image comparison plugin for jQuery and WordPress.
 
 **Notes**
 
+* Click on the view area to quickly switch between left and right image
+* Click on the zoom info in the top right to zoom-to-fit the view area
 * No mobile support - touch/pinch
 
 ![sravnitel ui](https://github.com/Elphel/sravnitel/blob/master/screenshot-1.png)
