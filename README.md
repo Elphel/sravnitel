@@ -12,6 +12,8 @@ Before-After overlayed image comparison plugin for jQuery and WordPress.
 
 * No mobile support - touch/pinch
 
+![sravnitel ui](https://github.com/Elphel/sravnitel/blob/master/screenshot-1.png)
+
 ##WordPress plugin
 see **readme.txt**
 
