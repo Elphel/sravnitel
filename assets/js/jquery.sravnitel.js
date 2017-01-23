@@ -271,7 +271,11 @@
     });
     
     zoom_info.on("click",function(){
-      set_zoom(0,0,settings.width);
+      
+      var z = settings.width/$("#display_window_0 .zoomable")[0].naturalWidth;
+      var height = z*$("#display_window_0 .zoomable")[0].naturalHeight;
+      
+      set_zoom(0,0,settings.width,height);
     });
     
     elem.append(zoom_info);
@@ -292,7 +296,7 @@
         //disable initial zoom
         settings.zoom = 0;
         
-        set_zoom(i_top,i_left,i_width);
+        set_zoom(i_top,i_left,i_width,i_height);
       }
       
       update_zoom_info();
@@ -455,24 +459,26 @@
       if (new_zoom==0) new_zoom = 0.05;
       
       new_width = new_zoom * old_width / old_zoom;
+      new_height = new_zoom * old_height / old_zoom;
       
       k = new_width/old_width;
       
       new_x = x-k*old_x;
       new_y = y-k*old_y;
       
-      set_zoom(new_y,new_x,new_width);
+      set_zoom(new_y,new_x,new_width,new_height);
       
     }
   
-    function set_zoom(top,left,width){
+    function set_zoom(top,left,width,height){
             
       $(".display_window").each(function(){
         var tmp_elem = $(this).find(".zoomable");
         tmp_elem.css({
           top: top+"px",
           left: left-$(this).position().left+"px",
-          width: width+"px"
+          width: width+"px",
+          height: height+"px"
         });
       });
       update_zoom_info();
@@ -543,7 +549,7 @@
   
 }(jQuery));
 
-function touchHandler(event) {
+function touchHandler_not_used(event) {
   var touch = event.changedTouches[0];
 
   var simulatedEvent = document.createEvent("MouseEvent");
@@ -562,7 +568,7 @@ function touchHandler(event) {
   
 }
 
-function init_touch(element) {
+function init_touch_not_used(element) {
   document.addEventListener("touchstart", touchHandler, true);
   document.addEventListener("touchmove", touchHandler, true);
   document.addEventListener("touchend", touchHandler, true);

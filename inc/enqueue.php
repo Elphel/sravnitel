@@ -22,11 +22,8 @@
 
 function sravnitel_enqueue_script($hook){
 
-  wp_enqueue_style( 'style1', SRAVNITEL_URL.'/assets/css/sravnitel.css');
-  
-  //wp_enqueue_script( 'script1', SRAVNITEL_URL.'/assets/js/jquery-3.1.1.js', array( 'jquery' ));
-  wp_enqueue_script( 'script2', SRAVNITEL_URL.'/assets/js/jquery.sravnitel.js', array( 'jquery' ));
-  wp_enqueue_script( 'script3', SRAVNITEL_URL.'/assets/js/jquery-ui-1.12.1/jquery-ui.js', array( 'jquery' ));
+  wp_enqueue_style( 'sravnitel-style', SRAVNITEL_URL.'/assets/css/sravnitel.css');
+  wp_enqueue_script( 'sravnitel', SRAVNITEL_URL.'/assets/js/jquery.sravnitel.js', array('jquery-ui-draggable'));
 
 }
 
