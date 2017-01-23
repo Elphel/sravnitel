@@ -74,8 +74,6 @@ see **readme.txt**
 
 ### Parameters
 
-**Shortcode Parameters**
-
 | Parameter    | Type  | Default | Required? | Description
 | :----------- | :---: | :-----: | :-------: | :----
 | `images`     | array(str)   |         | yes       | list of images urls
