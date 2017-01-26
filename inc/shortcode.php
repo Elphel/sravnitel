@@ -36,9 +36,10 @@ function sravnitel_init(){
      *   ---------------------------------------------------------------------------------------------------------------------------
      *   'id'         int    0       no       wrapper <div> element id 
      *   'images'     str    ''      yes      list of images ids (attachment_id), comma separated
-     *   'showtitles' bool   false   no       show/hide titles
      *   'width'      int    530     no       view window width px
      *   'height'     int    300     no       view window height px
+     *   'showtitles' bool   false   no       show/hide titles
+     *   'showtoggle' bool   false   no       show/hide button - switch between left and right image
      *   'index_l'    int    0       no       init, left image - is the index of the images array, starting from 0
      *   'index_r'    int    1       no       init, right image - is the index of the images array, starting from 0
      *   'zoom'       float  0       no       init, zoom, 0 - fit to view window, 1.0 - 100%
@@ -49,9 +50,10 @@ function sravnitel_init(){
     $defaults = Array(
       'id' => 0,
       'images' => '',
-      'showtitles' => false,
       'width' => 530,
       'height' => 300,
+      'showtitles' => false,
+      'showtoggle' => false,
       'index_l' => 0,
       'index_r' => 1,
       'zoom' => 0,
@@ -95,6 +97,12 @@ function sravnitel_init(){
       $showtitles_str = "true";
     }
     
+    if (!$sravnitel_atts['showtoggle']){
+      $showtoggle_str = "false";
+    }else{
+      $showtoggle_str = "true";
+    }    
+    
     $content = "<b>$titles_str</b>";
     
     $content = <<<TXT
@@ -104,9 +112,10 @@ function sravnitel_init(){
     jQuery("#$id_str").sravnitel({
       images: $images_str,
       titles: $titles_str,
-      showtitles: $showtitles_str,
       width: {$sravnitel_atts['width']},
       height: {$sravnitel_atts['height']},
+      showtitles: $showtitles_str,
+      showtoggle: $showtoggle_str,
       index_l: {$sravnitel_atts['index_l']},
       index_r: {$sravnitel_atts['index_r']},
       zoom: {$sravnitel_atts['zoom']},

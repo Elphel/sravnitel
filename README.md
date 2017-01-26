@@ -7,12 +7,12 @@ Before-After overlayed image comparison plugin for jQuery and WordPress.
 * Compare 2+ images 
 * Zoom and pan
 * Initial zoom and offset
+* Touch events: click, drag, pinch to zoom
 
 **Notes**
 
 * Click on the view area to quickly switch between left and right image
 * Click on the zoom info in the top right to zoom-to-fit the view area
-* No mobile support - touch/pinch
 
 ![sravnitel ui](https://github.com/Elphel/sravnitel/blob/master/screenshot-1.png)
 
@@ -79,7 +79,7 @@ see **readme.txt**
         "image 2",
         "image 3",
         "image 4"
-      ],showtitles:true,width:800,height:600}); 
+      ],showtitles:true,showtoggle:true,width:800,height:600});
     }
 
 ### Parameters
@@ -88,9 +88,10 @@ see **readme.txt**
 | :----------- | :---: | :-----: | :-------: | :----
 | `images`     | array(str)   |         | yes       | list of images urls
 | `titles`     | array(str)   |         | -       | list of images titles
-| `showtitles` | bool  |  false  | -         | show/hide titles
 | `width`      | int   |  300    | -         | view window width px
 | `height`     | int   |  200    | -         | view window height px
+| `showtitles` | bool  |  false  | -         | show/hide titles
+| `showtoggle` | bool  |  false  | -         | show/hide button - switch between left and right image
 | `index_l`    | int   |  0      | -         | init, left image - is the index of the images array, starting from 0
 | `index_r`    | int   |  1      | -         | init, right image - is the index of the images array, starting from 0
 | `zoom`       | float |  0      | -         | init, zoom, 0 - fit to view window, 1.0 - 100%

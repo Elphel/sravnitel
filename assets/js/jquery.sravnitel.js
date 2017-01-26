@@ -1,5 +1,6 @@
 /** 
  * @file jquery.sravnitel.js
+ * @version 1.1
  * @brief jquery plugin for comparing multiple images
  * @copyright Copyright (C) 2017 Elphel Inc.
  * @author Oleg Dzhimiev <oleg@elphel.com>
@@ -46,6 +47,8 @@
       width:300,
       // view window height
       height:200,
+      // shoe or hide toggle button
+      showtoggle: false,
       // init, left image - is the index of the images array, starting from 0
       index_l: 0,
       // init, right image - is the index of the images array, starting from 0
@@ -67,7 +70,13 @@
     var divider_line_width = 2;
     var divider_handle_size = 30;
     
-    var x0,y0;
+    var drag_sense_min_px = 10;
+    var pinch_sense_min_px = 10;
+    
+    var x0=0;
+    var y0=0;
+    
+    var toggle_state = 0;
     
     var tmp_display_window;
     //index: 0 - left, 1 - right
@@ -224,7 +233,6 @@
         left: -settings.width/2+"px"
       });
     }
-    
         
     $(".display_window").each(function(){
       
@@ -240,8 +248,8 @@
           y0 = e.pageY;
         },
         drag:function(e){
-          xc = e.pageX;
-          yc = e.pageY;
+          var xc = e.pageX;
+          var yc = e.pageY;
           sync_images(xc-x0,yc-y0);
           x0 = xc;
           y0 = yc;
@@ -280,7 +288,8 @@
     
     elem.append(zoom_info);
     
-    
+    if (settings.showtoggle) init_toggle_button();
+  
     $(images[0]).on("load",function(){
       //place_names($(this).height());
       //set zoom here:
@@ -290,8 +299,6 @@
         i_height = settings.zoom*$("#display_window_0 .zoomable")[0].naturalHeight;
         i_left = -settings.zoom*settings.center_x+settings.width/2;
         i_top = -settings.zoom*settings.center_y+settings.height/2;
-        
-        //console.log(i_top+" "+i_left+" : "+i_width);
         
         //disable initial zoom
         settings.zoom = 0;
@@ -304,11 +311,74 @@
     
     init_divider();
     init_zoom();
-    
+        
+    $(".display_window").each(function(){
+      
+      this.addEventListener('touchstart',function(e){
+        if (e.targetTouches.length>1){
+          touch_distance_0 = get_pinch_distance(e);
+        }
+      });
+      
+      this.addEventListener('touchmove',function(e){
+        if (e.targetTouches.length>1){
+          touch_distance_c = get_pinch_distance(e);
+          
+          var dy = touch_distance_0 - touch_distance_c;
+          
+          if (Math.abs(dy)>pinch_sense_min_px){
+            var i = parseInt($(this).attr("index"));
+            
+            var touch_center = get_pinch_center(e);
+            
+            var x = touch_center[0]-$(this).offset().left+i*($(this).position().left);
+            var y = touch_center[1]-$(this).offset().top;
+            
+            $("#display_window_0 .zoomable").each(function(){
+              zoom(this,x,y,dy);
+            });
+            
+            touch_distance_0 = touch_distance_c;
+          
+          }
+          
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+          
+        }
+      });
+      
+    });
+        
     $(window).resize(function(){
       $("#sravnitel_divider").draggable({
         containment:update_divider_containment()
       });
+    });
+    
+    // moved from css
+    // taken from http://jsfiddle.net/josedvq/Jyjjx/45/
+    $(".round-button").css({
+      width: "25%"
+    });
+    
+    $(".round-button-circle").css({
+      "border-radius":"2px",
+      border: "1px solid rgba(0,0,0,0.5)",
+      overflow: "hidden",
+      background: "rgba(100,200,100,1)",
+      "box-shadow": "0 0 3px rgba(0,0,0,0.5)"
+    });
+    
+    $(".round-button-circle").hover(function(){
+      $(this).css({
+        background:"rgba(50,50,50,1)"
+      });
+    },function(){
+      $(this).css({
+        background:"rgba(100,200,100,1)"
+      });      
     });
     
     //end-of-program
@@ -345,11 +415,21 @@
         "background-size": divider_handle_size+"px",
         width: divider_handle_size+"px",
         height: divider_handle_size+"px",
-        left: -(divider_handle_size/2-divider_line_width)+"px",
+        left: -(divider_handle_size/2-divider_line_width/2)+"px",
         cursor:"ew-resize",
         "text-align":"center"
       });
 
+      display_divider_handle.addClass("round-button");
+      
+      display_divider_handle.append($("<div>",{class:"round-button-circle"}).css({
+        width: (divider_handle_size+divider_line_width/2)+"px",
+        height: divider_handle_size+"px",
+        "line-height": divider_handle_size+"px",
+      }));
+      
+      //html("<span style='color:white'>&#9666;&nbsp;&#9656;</span>")
+      
       divider.append(display_divider_handle);
       
       elem.append(divider);
@@ -377,10 +457,10 @@
           });
         }
       });
+      
     }
     
     function reset_selection(){
-      //console.log("reset selection");
       $(".titles tr td").css({
         background:"white"
       });
@@ -389,7 +469,6 @@
     function set_selection(index){
       reset_selection();
       var rows = $(".titles tr");
-      //console.log("index is "+index+" length is "+rows.length);
       $(rows[parseInt(index)+1]).find("td").css({
         background:"rgba(200,200,200,0.5)"
       });
@@ -398,7 +477,6 @@
     function update_divider_containment(){
       x1 = $("#sravnitel_divider").parent().position().left;
       y1 = $("#sravnitel_divider").parent().position().top;
-      //console.log($("#sravnitel_divider").parent());
       x2 = x1+$("#sravnitel_divider").parent().width()-divider_line_width-2;
       y2 = y1+settings.height;
       return [x1,y1,x2,y2];
@@ -406,20 +484,16 @@
     
     function init_zoom(){
       
-      //console.log("init zoom");
-      
       $(".display_window").on("mousewheel wheel",function(e){
 
         // dm = e.originalEvent.deltaMode;
         
         var i = parseInt($(this).attr("index"));
         
-        dx = e.originalEvent.deltaX;
-        dy = e.originalEvent.deltaY;
-        x = e.originalEvent.pageX-$(this).offset().left+i*($(this).position().left);
-        y = e.originalEvent.pageY-$(this).offset().top;
-
-        // console.log("["+x+":"+y+"]: "+dx+" "+dy);
+        var dx = e.originalEvent.deltaX;
+        var dy = e.originalEvent.deltaY;
+        var x = e.originalEvent.pageX-$(this).offset().left+i*($(this).position().left);
+        var y = e.originalEvent.pageY-$(this).offset().top;
         
         // need only left to set initial zoom
         $("#display_window_0 .zoomable").each(function(){
@@ -439,8 +513,6 @@
       old_pos = $(elem).position();
       old_x = x-old_pos.left;
       old_y = y-old_pos.top;
-      
-      //console.log(x+" "+y+" "+old_x+" "+old_y);
       
       old_width = $(elem).width();
       old_height = $(elem).height();
@@ -475,10 +547,10 @@
       $(".display_window").each(function(){
         var tmp_elem = $(this).find(".zoomable");
         tmp_elem.css({
-          top: top+"px",
-          left: left-$(this).position().left+"px",
-          width: width+"px",
-          height: height+"px"
+          top: Math.round(top)+"px",
+          left: Math.round(left)-$(this).position().left+"px",
+          width: Math.round(width)+"px",
+          height: Math.round(height)+"px"
         });
       });
       update_zoom_info();
@@ -527,6 +599,31 @@
         tmp_elem.css("left","+="+dx);
         tmp_elem.css("top","+="+dy);
       });
+
+    }
+  
+    function init_toggle_button(){
+      var tgl_btn = $("<div>",{id:"toggle_button"}).css({
+        position: "absolute",
+        bottom: (2+$("#display_titles").height())+"px",
+        right: "2px"
+      });
+      
+      var tgl_btn_content = $("<div>",{class:"round-button-circle",title:"Quickly switch between left and right image"}).css({
+        color:"white",
+        padding: "0px 3px",
+        "user-select": "none",
+        cursor: "pointer"
+      }).html("toggle");
+      
+      tgl_btn.append(tgl_btn_content);
+      
+      elem.append(tgl_btn);
+      
+      tgl_btn_content.on("click",function(){
+        $("#display_window_"+toggle_state+" .zoomable").click();
+        toggle_state = (toggle_state+1)&0x1;
+      });
     }
   
   };
@@ -549,28 +646,16 @@
   
 }(jQuery));
 
-function touchHandler_not_used(event) {
-  var touch = event.changedTouches[0];
-
-  var simulatedEvent = document.createEvent("MouseEvent");
-    simulatedEvent.initMouseEvent({
-    touchstart: "mousedown",
-    touchmove: "mousemove",
-    touchend: "mouseup"
-  }[event.type], true, true, window, 1,
-    touch.screenX, touch.screenY,
-    touch.clientX, touch.clientY, false,
-    false, false, false, 0, null
-  );
-
-  touch.target.dispatchEvent(simulatedEvent);
-  event.preventDefault();
-  
+function get_pinch_distance(e){
+  var touches = e.targetTouches;
+  var dx = touches[0].pageX-touches[1].pageX;
+  var dy = touches[0].pageY-touches[1].pageY;
+  return Math.sqrt(dx*dx+dy*dy);
 }
 
-function init_touch_not_used(element) {
-  document.addEventListener("touchstart", touchHandler, true);
-  document.addEventListener("touchmove", touchHandler, true);
-  document.addEventListener("touchend", touchHandler, true);
-  document.addEventListener("touchcancel", touchHandler, true);
+function get_pinch_center(e){
+  var touches = e.targetTouches;
+  var xc = (touches[0].pageX+touches[1].pageX)/2;
+  var yc = (touches[0].pageY+touches[1].pageY)/2;
+  return [xc,yc];
 }

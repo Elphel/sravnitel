@@ -23,7 +23,7 @@
 function sravnitel_enqueue_script($hook){
 
   wp_enqueue_style( 'sravnitel-style', SRAVNITEL_URL.'/assets/css/sravnitel.css');
-  wp_enqueue_script( 'sravnitel', SRAVNITEL_URL.'/assets/js/jquery.sravnitel.js', array('jquery-ui-draggable'));
+  wp_enqueue_script( 'sravnitel', SRAVNITEL_URL.'/assets/js/jquery.sravnitel.js', array('jquery-ui-draggable','jquery-touch-punch'));
 
 }
 

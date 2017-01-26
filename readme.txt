@@ -2,10 +2,10 @@
 === Plugin Name ===
 Contributors: okdzhimiev
 Donate link: -
-Tags: images, posts, plugin, page, before after slider, visual composer, slider, shortcode, zoom, pan, drag
+Tags: images, posts, plugin, page, before after slider, visual composer, slider, shortcode, zoom, pan, drag, pinch to zoom
 Requires at least: 4.5.5
 Tested up to: 4.7.1
-Stable tag: 1.0
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,17 +20,19 @@ Sravnitel is a WordPress plugin by Elphel Inc. based on a jQuery plugin *jquery.
 * Compare 2+ images 
 * Zoom and pan
 * Initial zoom and offset
+* Touch events: click, drag, pinch to zoom
 
-**Notes**
+**Tips**
 
-* No mobile support - touch/pinch
+* Click on the view area to quickly switch between left and right image
+* Click on the zoom info in the top right to zoom-to-fit the view area
 
 **Quick examples**
 
 * Fit image into the view window, w/o titles:
   `[sravnitel images="ID0,ID1,ID2" width=640 height=480]`
-* Fit image into the view window,  with titles:
-  `[sravnitel images="ID0,ID1,ID2" width=640 height=480 showtitles=true]`
+* Fit image into the view window,  with titles and toggle button:
+  `[sravnitel images="ID0,ID1,ID2" width=640 height=480 showtitles=true showtoggle=true]`
 * Also fit image, with titles: 
   `[sravnitel images="ID0,ID1,ID2" width=640 height=480 showtitles=true zoom=0]`
 * Zoom 30%, with titles, x=0 and y=0 in the center of the view window: 
@@ -42,9 +44,10 @@ Sravnitel is a WordPress plugin by Elphel Inc. based on a jQuery plugin *jquery.
 | :----------- | :---: | :-----: | :-------: | :----
 | `id`         | int   |  0      | -         | wrapper's &lt;div&gt; element id 
 | `images`     | str   |         | yes       | list of images ids (attachment_id), comma separated
-| `showtitles` | bool  |  false  | -         | show/hide titles
 | `width`      | int   |  530    | -         | view window width px
 | `height`     | int   |  300    | -         | view window height px
+| `showtitles` | bool  |  false  | -         | show/hide titles
+| `showtoggle` | bool  |  false  | -         | show/hide button - switch between left and right image
 | `index_l`    | int   |  0      | -         | init, left image - is the index of the images array, starting from 0
 | `index_r`    | int   |  1      | -         | init, right image - is the index of the images array, starting from 0
 | `zoom`       | float |  0      | -         | init, zoom, 0 - fit to view window, 1.0 - 100%
@@ -76,8 +79,8 @@ It's an integer number. Insert an image into a post and look for "wp-image-NN". 
 
 * Fit image into the view window, w/o titles:
   `[sravnitel images="ID0,ID1,ID2" width=640 height=480]`
-* Fit image into the view window,  with titles:
-  `[sravnitel images="ID0,ID1,ID2" width=640 height=480 showtitles=true]`
+* Fit image into the view window,  with titles and toggle button:
+  `[sravnitel images="ID0,ID1,ID2" width=640 height=480 showtitles=true showtoggle=true]`
 * Also fit image, with titles: 
   `[sravnitel images="ID0,ID1,ID2" width=640 height=480 showtitles=true zoom=0]`
 * Zoom 30%, with titles, x=0 and y=0 in the center of the view window: 
@@ -89,9 +92,10 @@ It's an integer number. Insert an image into a post and look for "wp-image-NN". 
 | :----------- | :---: | :-----: | :-------: | :----
 | `id`         | int   |  0      | -         | wrapper's &lt;div&gt; element id 
 | `images`     | str   |         | yes       | list of images ids (attachment_id), comma separated
-| `showtitles` | bool  |  false  | -         | show/hide titles
 | `width`      | int   |  530    | -         | view window width px
 | `height`     | int   |  300    | -         | view window height px
+| `showtitles` | bool  |  false  | -         | show/hide titles
+| `showtoggle` | bool  |  false  | -         | show/hide button - switch between left and right image
 | `index_l`    | int   |  0      | -         | init, left image - is the index of the images array, starting from 0
 | `index_r`    | int   |  1      | -         | init, right image - is the index of the images array, starting from 0
 | `zoom`       | float |  0      | -         | init, zoom, 0 - fit to view window, 1.0 - 100%
@@ -106,10 +110,20 @@ It's an integer number. Insert an image into a post and look for "wp-image-NN". 
 
 == Changelog ==
 
+= 1.1 = 
+* Fixed coordinates not rounding while dragging
+* Added single touch events by enabling 'jquery-touch-punch' in enqueue.php
+* Added multi touch - zoom by pinching (tested on Android)
+* Added a toggle button - to switch between images (hidden by default)
+* Changed handle look
+
 = 1.0 =
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.1 =
+* This version adds single (dragging) and multi (pinch to zoom) touch mobile support.
 
 = 1.0 =
 * Initial release.
