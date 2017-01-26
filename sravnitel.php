@@ -25,7 +25,7 @@
 Plugin Name: Sravnitel
 Plugin URI: http://wordpress.org/plugins/sravnitel/
 Description: Before-After overlayed image comparison plugin with: slider, zoom, 2+ images.
-Author: Oleg Dzhimiev
+Author: Elphel Inc.
 Version: 1.1
 Author URI: http://www3.elphel.com
 */

@@ -1,7 +1,6 @@
  
 === Plugin Name ===
 Contributors: okdzhimiev
-Donate link: -
 Tags: images, posts, plugin, page, before after slider, visual composer, slider, shortcode, zoom, pan, drag, pinch to zoom
 Requires at least: 4.5.5
 Tested up to: 4.7.1
@@ -27,32 +26,34 @@ Sravnitel is a WordPress plugin by Elphel Inc. based on a jQuery plugin *jquery.
 * Click on the view area to quickly switch between left and right image
 * Click on the zoom info in the top right to zoom-to-fit the view area
 
+**Working demo**
+
+[Elphel's Blog: Lapped MDCT-based image conditioning with optical aberrations correction, color conversion, edge emphasis and noise reduction](http://blog.elphel.com/2017/01/lapped-mdct-based-image-conditioning-with-optical-aberrations-correction-color-conversion-edge-emphasis-and-noise-reduction/)
+
 **Quick examples**
 
 * Fit image into the view window, w/o titles:
-  `[sravnitel images="ID0,ID1,ID2" width=640 height=480]`
+`[sravnitel images="ID0,ID1,ID2" width=640 height=480]`
 * Fit image into the view window,  with titles and toggle button:
-  `[sravnitel images="ID0,ID1,ID2" width=640 height=480 showtitles=true showtoggle=true]`
-* Also fit image, with titles: 
-  `[sravnitel images="ID0,ID1,ID2" width=640 height=480 showtitles=true zoom=0]`
-* Zoom 30%, with titles, x=0 and y=0 in the center of the view window: 
-  `[sravnitel images='ID0,ID1,ID2' width=640 height=480 showtitles=true zoom=0.3 center_x=0 center_y=0]`
+`[sravnitel images="ID0,ID1,ID2" width=640 height=480 showtitles=true showtoggle=true]`
+* Also fit image, with titles:
+`[sravnitel images="ID0,ID1,ID2" width=640 height=480 showtitles=true zoom=0]`
+* Zoom 30%, with titles, x=0 and y=0 in the center of the view window:
+`[sravnitel images='ID0,ID1,ID2' width=640 height=480 showtitles=true zoom=0.3 center_x=0 center_y=0]`
 
 **Shortcode Parameters**
 
-| Parameter    | Type  | Default | Required? | Description
-| :----------- | :---: | :-----: | :-------: | :----
-| `id`         | int   |  0      | -         | wrapper's &lt;div&gt; element id 
-| `images`     | str   |         | yes       | list of images ids (attachment_id), comma separated
-| `width`      | int   |  530    | -         | view window width px
-| `height`     | int   |  300    | -         | view window height px
-| `showtitles` | bool  |  false  | -         | show/hide titles
-| `showtoggle` | bool  |  false  | -         | show/hide button - switch between left and right image
-| `index_l`    | int   |  0      | -         | init, left image - is the index of the images array, starting from 0
-| `index_r`    | int   |  1      | -         | init, right image - is the index of the images array, starting from 0
-| `zoom`       | float |  0      | -         | init, zoom, 0 - fit to view window, 1.0 - 100%
-| `center_x`   | int   |  0      | -         | init, x coordinate of the original image to be placed in the center of the view window 
-| `center_y`   | int   |  0      | -         | init, y coordinate of the original image to be placed in the center of the view window
+* **id**         - int   - 0      - wrapper's &lt;div&gt; element id
+* **images**     - str   - ''     - (required) list of images ids (attachment_id), comma separated
+* **width**      - int   - 530    - view window width px
+* **height**     - int   - 300    - view window height px
+* **showtitles** - bool  - false  - show/hide titles
+* **showtoggle** - bool  - false  - show/hide button - switch between left and right image
+* **index_l**    - int   - 0      - init, left image - is the index of the images array, starting from 0
+* **index_r**    - int   - 1      - init, right image - is the index of the images array, starting from 0
+* **zoom**       - float - 0      - init, zoom, 0 - fit to view window, 1.0 - 100%
+* **center_x**   - int   - 0      - init, x coordinate of the original image to be placed in the center of the view window 
+* **center_y**   - int   - 0      - init, y coordinate of the original image to be placed in the center of the view window
 
 == Installation ==
 
@@ -61,13 +62,9 @@ Sravnitel is a WordPress plugin by Elphel Inc. based on a jQuery plugin *jquery.
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
-
-An answer to that question.
-
 = How is it implemented? =
 
-Same as Twenty20 plugin - stacks two selected images on top of each other. As the slider moves the compared images are displayed on the opposite sides of the divider.
+Same as Twenty20 plugin - stacks two selected images so they are displayed as if one is lying on top of another. As the slider moves the compared images are displayed on the opposite sides of the divider.
 
 Image titles are taken from description or title (if description is empty) of the attached image.
 
@@ -78,29 +75,27 @@ It's an integer number. Insert an image into a post and look for "wp-image-NN". 
 = Examples =
 
 * Fit image into the view window, w/o titles:
-  `[sravnitel images="ID0,ID1,ID2" width=640 height=480]`
+`[sravnitel images="ID0,ID1,ID2" width=640 height=480]`
 * Fit image into the view window,  with titles and toggle button:
-  `[sravnitel images="ID0,ID1,ID2" width=640 height=480 showtitles=true showtoggle=true]`
-* Also fit image, with titles: 
-  `[sravnitel images="ID0,ID1,ID2" width=640 height=480 showtitles=true zoom=0]`
-* Zoom 30%, with titles, x=0 and y=0 in the center of the view window: 
-  `[sravnitel images='ID0,ID1,ID2' width=640 height=480 showtitles=true zoom=0.3 center_x=0 center_y=0]`
+`[sravnitel images="ID0,ID1,ID2" width=640 height=480 showtitles=true showtoggle=true]`
+* Also fit image, with titles:
+`[sravnitel images="ID0,ID1,ID2" width=640 height=480 showtitles=true zoom=0]`
+* Zoom 30%, with titles, x=0 and y=0 in the center of the view window:
+`[sravnitel images='ID0,ID1,ID2' width=640 height=480 showtitles=true zoom=0.3 center_x=0 center_y=0]`
 
 = Shortcode Parameters =
 
-| Parameter    | Type  | Default | Required? | Description
-| :----------- | :---: | :-----: | :-------: | :----
-| `id`         | int   |  0      | -         | wrapper's &lt;div&gt; element id 
-| `images`     | str   |         | yes       | list of images ids (attachment_id), comma separated
-| `width`      | int   |  530    | -         | view window width px
-| `height`     | int   |  300    | -         | view window height px
-| `showtitles` | bool  |  false  | -         | show/hide titles
-| `showtoggle` | bool  |  false  | -         | show/hide button - switch between left and right image
-| `index_l`    | int   |  0      | -         | init, left image - is the index of the images array, starting from 0
-| `index_r`    | int   |  1      | -         | init, right image - is the index of the images array, starting from 0
-| `zoom`       | float |  0      | -         | init, zoom, 0 - fit to view window, 1.0 - 100%
-| `center_x`   | int   |  0      | -         | init, x coordinate of the original image to be placed in the center of the view window 
-| `center_y`   | int   |  0      | -         | init, y coordinate of the original image to be placed in the center of the view window
+* **id**         - int   - 0      - wrapper's &lt;div&gt; element id
+* **images**     - str   - ''     - (required) list of images ids (attachment_id), comma separated
+* **width**      - int   - 530    - view window width px
+* **height**     - int   - 300    - view window height px
+* **showtitles** - bool  - false  - show/hide titles
+* **showtoggle** - bool  - false  - show/hide button - switch between left and right image
+* **index_l**    - int   - 0      - init, left image - is the index of the images array, starting from 0
+* **index_r**    - int   - 1      - init, right image - is the index of the images array, starting from 0
+* **zoom**       - float - 0      - init, zoom, 0 - fit to view window, 1.0 - 100%
+* **center_x**   - int   - 0      - init, x coordinate of the original image to be placed in the center of the view window 
+* **center_y**   - int   - 0      - init, y coordinate of the original image to be placed in the center of the view window
   
 == Screenshots ==
 
