@@ -33,6 +33,7 @@ see **readme.txt**
 ###Dependencies
 * jquery
 * jquery-ui-draggable
+* jquery-ui-touch-punch
 
 ### Usage example
 
