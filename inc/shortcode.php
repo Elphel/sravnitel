@@ -106,6 +106,7 @@ function sravnitel_init(){
     $content = "<b>$titles_str</b>";
     
     $content = <<<TXT
+<!-- https://wordpress.org/plugins/sravnitel/ -->
 <div id="$id_str" style="position:relative;" class="sravnitel"></div>
 <script>
   jQuery(window).load(function(){
