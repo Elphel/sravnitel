@@ -94,20 +94,19 @@ function sravnitel_init(){
     if (!$sravnitel_atts['showtitles']){
       $showtitles_str = "false";
     }else{
-      $showtitles_str = "true";
+      $showtitles_str = strtolower($sravnitel_atts['showtitles']);
     }
     
     if (!$sravnitel_atts['showtoggle']){
       $showtoggle_str = "false";
     }else{
-      $showtoggle_str = "true";
+      $showtoggle_str = strtolower($sravnitel_atts['showtoggle']);
     }    
     
     $content = "<b>$titles_str</b>";
     
     $content = <<<TXT
-<!-- https://wordpress.org/plugins/sravnitel/ -->
-<div id="$id_str" style="position:relative;" class="sravnitel"></div>
+<div><div id="$id_str" style="position:relative;" class="sravnitel"></div></div>
 <script>
   jQuery(window).load(function(){
     jQuery("#$id_str").sravnitel({

@@ -1,10 +1,10 @@
  
 === Plugin Name ===
 Contributors: okdzhimiev
-Tags: images, posts, plugin, page, before after slider, visual composer, slider, shortcode, zoom, pan, drag, pinch to zoom
+Tags: images, posts, plugin, page, before after slider, visual composer, slider, shortcode, zoom, pan, drag, pinch to zoom, compare images
 Requires at least: 4.5.5
-Tested up to: 4.7.1
-Stable tag: 1.1
+Tested up to: 4.7.2
+Stable tag: 1.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,6 +25,7 @@ Sravnitel is a WordPress plugin by Elphel Inc. based on a jQuery plugin *jquery.
 
 * Click on the view area to quickly switch between left and right image
 * Click on the zoom info in the top right to zoom-to-fit the view area
+* To place several instances of the plugin assign unique ids: [sravnitel id='test1' ...], [sravnitel id='test2' ...]
 
 **Working demo**
 
@@ -75,7 +76,7 @@ It's an integer number. Insert an image into a post and look for "wp-image-NN". 
 = Examples =
 
 * Fit image into the view window, w/o titles:
-`[sravnitel images="ID0,ID1,ID2" width=640 height=480]`
+`[sravnitel id="test" images="ID0,ID1,ID2" width=640 height=480]`
 * Fit image into the view window,  with titles and toggle button:
 `[sravnitel images="ID0,ID1,ID2" width=640 height=480 showtitles=true showtoggle=true]`
 * Also fit image, with titles:
@@ -105,6 +106,16 @@ It's an integer number. Insert an image into a post and look for "wp-image-NN". 
 
 == Changelog ==
 
+= 1.3 =
+* Allow more than one instance on the page
+* Set title table margin to 0px
+* Fixed [... showtitles=false ...] showing titles
+* Added delayed images place updating due to drag event lagging.
+
+= 1.2 = 
+* Fixed view size when titles are disabled (showtitles=false)
+* Fixed divider containment area - offset() instead of position()
+
 = 1.1 = 
 * Fixed coordinates not rounding while dragging
 * Added single touch events by enabling 'jquery-touch-punch' in enqueue.php
@@ -116,6 +127,13 @@ It's an integer number. Insert an image into a post and look for "wp-image-NN". 
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.3 =
+* Allow more than one instance on a page, improved divider dragging
+
+= 1.2 = 
+* Fixed view size when titles are disabled (showtitles=false)
+* Fixed divider containment area
 
 = 1.1 =
 * This version adds single (dragging) and multi (pinch to zoom) touch mobile support.

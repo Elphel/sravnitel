@@ -1,6 +1,6 @@
 /** 
  * @file jquery.sravnitel.js
- * @version 1.1
+ * @version 1.3
  * @brief jquery plugin for comparing multiple images
  * @copyright Copyright (C) 2017 Elphel Inc.
  * @author Oleg Dzhimiev <oleg@elphel.com>
@@ -34,6 +34,8 @@
   // https://gist.github.com/leolux/c794fc63d9c362013448
   var SRAVNITEL = function(element,options){
     var elem = $(element);
+    var elemID = elem.attr("id");
+    
     var obj = this;
     
     var defaults = {
@@ -62,6 +64,14 @@
     };
     
     var settings = $.extend(defaults,options);
+    
+    var tmp = settings.showtitles;
+    
+    if (typeof tmp == 'string' || tmp instanceof String){
+      if ((tmp.toLowerCase()=="false")||(settings.showtitles=="0")){
+        settings.showtitles = false;
+      }
+    }
     
     var images = [];
     
@@ -111,25 +121,19 @@
       });
           
     elem.append(tmp_display_titles);
-      
-    if (settings.showtitles==false){
-      //console.log("titles hidden");
-      $(".titles").css({
-        display:"none"
-      });
-    }
     
     var tmp_title;
     
     if (settings.images.length>0){
       
-      var tmp_table = $("<table>").css({
+      var tmp_table = $("<table>",{class:"titles"}).css({
         width: "100%",
         border: "1px solid rgba(200,200,200,0.5)",
+        margin: "0px 0px 0px 0px",
         "text-align": "center"
       });
       
-      $("#display_titles").append(tmp_table);
+      elem.find("#display_titles").append(tmp_table);
       
       tmp_table.append(
         $("<tr>").append(
@@ -174,9 +178,9 @@
             var tmp_index = $(this).attr("index");
             var tmp_side = $(this).attr("side");
             //console.log(settings.images[tmp_index]);
-            $(".selector_"+tmp_side).find("div").hide();
+            elem.find(".selector_"+tmp_side).find("div").hide();
             $(this).find("div").show();
-            $("#display_window_"+tmp_side+" .zoomable").attr("src",settings.images[tmp_index]).attr("index",tmp_index);
+            elem.find("#display_window_"+tmp_side+" .zoomable").attr("src",settings.images[tmp_index]).attr("index",tmp_index);
             reset_selection();
           });
           
@@ -191,9 +195,14 @@
       
     }
     
+    if (settings.showtitles==false){
+      //console.log("titles hidden");
+      elem.find(".titles").hide();
+    }
+    
     elem.css({
       width: settings.width+"px",
-      height: (settings.height+$("#display_titles").height())+"px"
+      height: (settings.height+elem.find("#display_titles").height())+"px"
     });
     
     for(var i=0;i<settings.images.length;i++){
@@ -219,22 +228,24 @@
       
       image_l = images[0];
       image_r = images[0].clone();
-      $(".selector_0")[0].click();
       
-      $(".selector_1")[0].click();
+      //image_l.draggable();
       image_r.draggable();
+      
+      elem.find(".selector_0")[0].click();
+      elem.find(".selector_1")[0].click();
       
     }else if(images.length>=2){
       image_l = images[settings.index_l];
       image_r = images[settings.index_r];
-      $(".selector_0")[settings.index_l].click();
-      $(".selector_1")[settings.index_r].click();
+      elem.find(".selector_0")[settings.index_l].click();
+      elem.find(".selector_1")[settings.index_r].click();
       image_r.css({
         left: -settings.width/2+"px"
       });
     }
         
-    $(".display_window").each(function(){
+    elem.find(".display_window").each(function(){
       
       var index = $(this).attr("index");
       
@@ -263,11 +274,13 @@
           place_divider(divider_line_width/2);
           tmp_index = 1;
         }else{
-          place_divider(settings.width-divider_line_width-1);
+          //shot left
+          //place_divider(settings.width-divider_line_width-1);
+          place_divider(settings.width-divider_line_width+1);
           tmp_index = 0;
         }
         
-        var sindex = $("#display_window_"+tmp_index+" .zoomable").attr("index");
+        var sindex = elem.find("#display_window_"+tmp_index+" .zoomable").attr("index");
         set_selection(sindex);
       });
     });
@@ -280,8 +293,8 @@
     
     zoom_info.on("click",function(){
       
-      var z = settings.width/$("#display_window_0 .zoomable")[0].naturalWidth;
-      var height = z*$("#display_window_0 .zoomable")[0].naturalHeight;
+      var z = settings.width/elem.find("#display_window_0 .zoomable")[0].naturalWidth;
+      var height = z*elem.find("#display_window_0 .zoomable")[0].naturalHeight;
       
       set_zoom(0,0,settings.width,height);
     });
@@ -295,8 +308,8 @@
       //set zoom here:
       if (settings.zoom!=0){
         
-        i_width = settings.zoom*$("#display_window_0 .zoomable")[0].naturalWidth;
-        i_height = settings.zoom*$("#display_window_0 .zoomable")[0].naturalHeight;
+        i_width = settings.zoom*elem.find("#display_window_0 .zoomable")[0].naturalWidth;
+        i_height = settings.zoom*elem.find("#display_window_0 .zoomable")[0].naturalHeight;
         i_left = -settings.zoom*settings.center_x+settings.width/2;
         i_top = -settings.zoom*settings.center_y+settings.height/2;
         
@@ -304,6 +317,9 @@
         settings.zoom = 0;
         
         set_zoom(i_top,i_left,i_width,i_height);
+      }else{
+        //initial images sync height syncing
+        zoom_info.click();
       }
       
       update_zoom_info();
@@ -312,7 +328,7 @@
     init_divider();
     init_zoom();
         
-    $(".display_window").each(function(){
+    elem.find(".display_window").each(function(){
       
       this.addEventListener('touchstart',function(e){
         if (e.targetTouches.length>1){
@@ -334,7 +350,7 @@
             var x = touch_center[0]-$(this).offset().left+i*($(this).position().left);
             var y = touch_center[1]-$(this).offset().top;
             
-            $("#display_window_0 .zoomable").each(function(){
+            elem.find("#display_window_0 .zoomable").each(function(){
               zoom(this,x,y,dy);
             });
             
@@ -352,18 +368,18 @@
     });
         
     $(window).resize(function(){
-      $("#sravnitel_divider").draggable({
+      elem.find("#sravnitel_divider").draggable({
         containment:update_divider_containment()
       });
     });
     
     // moved from css
     // taken from http://jsfiddle.net/josedvq/Jyjjx/45/
-    $(".round-button").css({
+    elem.find(".round-button").css({
       width: "25%"
     });
     
-    $(".round-button-circle").css({
+    elem.find(".round-button-circle").css({
       "border-radius":"2px",
       border: "1px solid rgba(0,0,0,0.5)",
       overflow: "hidden",
@@ -371,7 +387,7 @@
       "box-shadow": "0 0 3px rgba(0,0,0,0.5)"
     });
     
-    $(".round-button-circle").hover(function(){
+    elem.find(".round-button-circle").hover(function(){
       $(this).css({
         background:"rgba(50,50,50,1)"
       });
@@ -384,7 +400,7 @@
     //end-of-program
         
     function place_divider(x){
-      $("#sravnitel_divider").css({
+      elem.find("#sravnitel_divider").css({
         left: (x-divider_line_width/2)+"px"
       });
       update_display_windows();
@@ -404,7 +420,8 @@
           background:"rgba(0,0,0,0.5)",
           border: "1px solid gray",
           width:divider_line_width+"px",
-          height:(settings.height-2)+"px",
+          height:(settings.height)+"px",
+//           height:(settings.height-2)+"px",
           cursor:"ew-resize"
       });
       divider.append(tmp_divider_line);
@@ -438,7 +455,7 @@
             
       var tmp_containment = update_divider_containment();
       
-      $("#sravnitel_divider").draggable({
+      elem.find("#sravnitel_divider").draggable({
         axis:"x",
         //containment:"parent",
         containment:tmp_containment,
@@ -447,11 +464,16 @@
         },
         drag:function(){
           $(this).off("mouseout");
+          //immediate call
           update_display_windows();
+          //delayed call
+          setTimeout(function(){
+            update_display_windows();
+          },10);
         },
         stop:function(){
           $(this).on("mouseout",function(){
-            $(".divider").css({
+            elem.find(".divider").css({
               background:"rgba(0,0,0,0.5)"
             });
           });
@@ -461,7 +483,7 @@
     }
     
     function reset_selection(){
-      $(".titles tr td").css({
+      elem.find(".titles tr td").css({
         background:"white"
       });
     }
@@ -469,22 +491,23 @@
     function set_selection(index){
       reset_selection();
       var rows = $(".titles tr");
-      $(rows[parseInt(index)+1]).find("td").css({
+      elem.find(rows[parseInt(index)+1]).find("td").css({
         background:"rgba(200,200,200,0.5)"
       });
     }
     
     function update_divider_containment(){
-      x1 = $("#sravnitel_divider").parent().position().left;
-      y1 = $("#sravnitel_divider").parent().position().top;
-      x2 = x1+$("#sravnitel_divider").parent().width()-divider_line_width-2;
+      x1 = elem.find("#sravnitel_divider").parent().offset().left;
+      y1 = elem.find("#sravnitel_divider").parent().offset().top;
+      //x2 = x1+elem.find("#sravnitel_divider").parent().width()-divider_line_width-2;
+      x2 = x1+elem.find("#sravnitel_divider").parent().width()-divider_line_width;
       y2 = y1+settings.height;
       return [x1,y1,x2,y2];
     }
     
     function init_zoom(){
       
-      $(".display_window").on("mousewheel wheel",function(e){
+      elem.find(".display_window").on("mousewheel wheel",function(e){
 
         // dm = e.originalEvent.deltaMode;
         
@@ -496,7 +519,7 @@
         var y = e.originalEvent.pageY-$(this).offset().top;
         
         // need only left to set initial zoom
-        $("#display_window_0 .zoomable").each(function(){
+        elem.find("#display_window_0 .zoomable").each(function(){
           zoom(this,x,y,dy);
         });
         
@@ -543,8 +566,8 @@
     }
   
     function set_zoom(top,left,width,height){
-            
-      $(".display_window").each(function(){
+       
+      elem.find(".display_window").each(function(){
         var tmp_elem = $(this).find(".zoomable");
         tmp_elem.css({
           top: Math.round(top)+"px",
@@ -554,7 +577,6 @@
         });
       });
       update_zoom_info();
-      
     }
   
     function update_zoom_info(){
@@ -569,32 +591,35 @@
         cursor: "pointer",
       }).html(z);
       
-      $("#zoom_info").html(el);
+      elem.find("#zoom_info").html(el);
       
     }
 
     function get_zoom(){
-      return $("#display_window_0 .zoomable").width()/$("#display_window_0 .zoomable")[0].naturalWidth;
+      return elem.find("#display_window_0 .zoomable").width()/elem.find("#display_window_0 .zoomable")[0].naturalWidth;
     }
   
     function update_display_windows(){
-      $("#display_window_0").css({
-        width: $("#sravnitel_divider").position().left+"px"
+      
+      var tmp_left = elem.find("#sravnitel_divider").position().left;
+      
+      elem.find("#display_window_0").css({
+        width: tmp_left+"px"
       });
       
-      oldleft = $("#display_window_1").position().left;
-      newleft = $("#sravnitel_divider").position().left;
+      oldleft = elem.find("#display_window_1").position().left;
+      newleft = tmp_left;
       
       deltaleft = newleft - oldleft;
       
-      $("#display_window_1").css("left", "+="+deltaleft);
-      $("#display_window_1").css("width","-="+deltaleft);
-      $("#display_window_1 .zoomable").css("left", "-="+deltaleft);
+      elem.find("#display_window_1").css("left", "+="+deltaleft);
+      elem.find("#display_window_1").css("width","-="+deltaleft);
+      elem.find("#display_window_1 .zoomable").css("left", "-="+deltaleft);
     }
   
     function sync_images(dx,dy){
-      //dx,dy;
-      $(".display_window").each(function(){
+      //dx,dy;      
+      elem.find(".display_window").each(function(){
         var tmp_elem = $(this).find(".zoomable");
         tmp_elem.css("left","+="+dx);
         tmp_elem.css("top","+="+dy);
@@ -621,7 +646,7 @@
       elem.append(tgl_btn);
       
       tgl_btn_content.on("click",function(){
-        $("#display_window_"+toggle_state+" .zoomable").click();
+        elem.find("#display_window_"+toggle_state+" .zoomable").click();
         toggle_state = (toggle_state+1)&0x1;
       });
     }
